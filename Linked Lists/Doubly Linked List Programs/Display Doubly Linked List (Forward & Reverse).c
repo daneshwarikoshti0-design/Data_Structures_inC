@@ -1,30 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct NODE {
+struct NODE{
     int data;
-    struct NODE *prev, *next;
+    struct NODE *prev,*next;
 };
 
-void displayForward(struct NODE *head) {
-    struct NODE *temp = head;
-    while(temp!=NULL){
-        printf("%d <-> ",temp->data);
-        temp=temp->next;
+struct NODE* createNode(int val){
+    struct NODE* newNode=(struct NODE*)malloc(sizeof(struct NODE));
+    newNode->data=val;
+    newNode->prev=NULL;
+    newNode->next=NULL;
+    return newNode;
+}
+
+void displayForward(struct NODE* head){
+    while(head!=NULL){
+        printf("%d <-> ",head->data);
+        head=head->next;
     }
     printf("NULL\n");
 }
 
-void displayReverse(struct NODE *head) {
-    struct NODE *temp=head;
-    if(temp==NULL) return;
+void displayReverse(struct NODE* head){
+    if(head==NULL) return;
+    while(head->next!=NULL)
+        head=head->next;
 
-    while(temp->next!=NULL)
-        temp=temp->next;
-
-    while(temp!=NULL){
-        printf("%d <-> ",temp->data);
-        temp=temp->prev;
+    while(head!=NULL){
+        printf("%d <-> ",head->data);
+        head=head->prev;
     }
     printf("NULL\n");
+}
+
+int main(){
+    struct NODE *head=NULL,*temp;
+    int n,val;
+
+    printf("Enter number of nodes: ");
+    scanf("%d",&n);
+
+    for(int i=0;i<n;i++){
+        scanf("%d",&val);
+        temp=createNode(val);
+        temp->next=head;
+        if(head!=NULL) head->prev=temp;
+        head=temp;
+    }
+
+    displayForward(head);
+    displayReverse(head);
 }
