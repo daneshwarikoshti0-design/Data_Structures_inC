@@ -14,6 +14,14 @@ void traverse(struct NODE *head){
         printf("%d -> ",temp->data);
         temp=temp->next;
     }while(temp!=head);
+}
 
-    printf("(HEAD)\n");
+int main(){
+    struct NODE n1={10,NULL},n2={20,NULL},n3={30,NULL};
+
+    n1.next=&n2;
+    n2.next=&n3;
+    n3.next=&n1;
+
+    traverse(&n1);
 }
