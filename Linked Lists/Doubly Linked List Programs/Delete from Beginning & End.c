@@ -1,33 +1,50 @@
-struct NODE* deleteBeginning(struct NODE *head){
-    if(head==NULL)
-        return NULL;
+#include <stdio.h>
+#include <stdlib.h>
 
-    struct NODE *temp=head;
-    head=head->next;
+struct NODE{
+    int data;
+    struct NODE *prev,*next;
+};
 
-    if(head!=NULL)
-        head->prev=NULL;
-
-    free(temp);
-    return head;
+struct NODE* createNode(int val){
+    struct NODE* newNode=(struct NODE*)malloc(sizeof(struct NODE));
+    newNode->data=val;
+    newNode->prev=newNode->next=NULL;
+    return newNode;
 }
 
-struct NODE* deleteEnd(struct NODE *head){
-    if(head==NULL)
-        return NULL;
+struct NODE* insertBeginning(struct NODE* head,int val){
+    struct NODE* newNode=createNode(val);
+    newNode->next=head;
+    if(head!=NULL) head->prev=newNode;
+    return newNode;
+}
 
-    struct NODE *temp=head;
+struct NODE* insertEnd(struct NODE* head,int val){
+    struct NODE* newNode=createNode(val);
+    if(head==NULL) return newNode;
 
-    if(temp->next==NULL){
-        free(temp);
-        return NULL;
-    }
-
+    struct NODE* temp=head;
     while(temp->next!=NULL)
         temp=temp->next;
 
-    temp->prev->next=NULL;
-    free(temp);
-
+    temp->next=newNode;
+    newNode->prev=temp;
     return head;
+}
+
+void display(struct NODE* head){
+    while(head){
+        printf("%d <-> ",head->data);
+        head=head->next;
+    }
+    printf("NULL\n");
+}
+
+int main(){
+    struct NODE* head=NULL;
+    head=insertBeginning(head,10);
+    head=insertEnd(head,20);
+    head=insertEnd(head,30);
+    display(head);
 }
